@@ -26,34 +26,42 @@ namespace Lab8
             "fruit","coke"};
 
             int studentNum, orginalNum;
-            bool contYN = true, yesOrNo = true, validData = true;
+            bool contYN = true, validData = true;
             string userAnswer;
 
             Console.Write("Welcome to Our C# Class. ");
 
             while (contYN)
             {
-                orginalNum = UserInput();
-                studentNum = orginalNum - 1;
-                try
+                if (contYN)
                 {
-                    Console.WriteLine("Student {0} is {1}. What would you like to know" +
-                        "about {2}? (enter of 'hometown' or 'favorite food'", orginalNum,
-                        names[studentNum], names[studentNum]);
-
-                    userAnswer = Console.ReadLine().ToLower();
-                    Answers(validData, userAnswer, names, hometown, food, studentNum);
-
-                }
-                catch(IndexOutOfRangeException)
-                {
-                    Console.WriteLine("Error: please a number between 1 and 20." +
-                        " Try Again\n");
                     orginalNum = UserInput();
                     studentNum = orginalNum - 1;
+                    try
+                    {
+                        Console.WriteLine("Student {0} is {1}. What would you like to know" +
+                            "about {2}? (enter of 'hometown' or 'favorite food'", orginalNum,
+                            names[studentNum], names[studentNum]);
+
+                        userAnswer = Console.ReadLine().ToLower();
+                        Answers(validData, userAnswer, names, hometown, food, studentNum);
+
+                        Console.WriteLine("Do you want to run this again? 'Yes' or 'No'");
+                        contYN = ContinueMethod();
+
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        Console.WriteLine("Error: please a number between 1 and 20." +
+                            " Try Again\n");
+                        orginalNum = UserInput();
+                        studentNum = orginalNum - 1;
+                    }
                 }
 
             }
+            Console.WriteLine("Thank You Come Again!");
+            Console.ReadLine();
         }
 
         static int UserInput()
