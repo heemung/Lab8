@@ -8,6 +8,7 @@ namespace Lab8
 {
     class Program
     {
+        static string strCheck;
         static void Main(string[] args)
         {
 
@@ -24,133 +25,115 @@ namespace Lab8
             "beer", "baked potatos", "hero dogs", "bacon", "24oz steak", "babies", "bananas",
             "fruit","coke"};
 
-            int studentNum;
-            bool contYN = true, validdata, caseTemp;
+            int studentNum, orginalNum;
+            bool contYN = true, yesOrNo = true, validdata;
             string userAnswer;
-            string userWantMore;
 
             Console.Write("Welcome to Our C# Class. ");
 
             while (contYN)
             {
                 validdata = true;
-                studentNum = UserInput();
-                Console.WriteLine("Student {0} is {1}. What would you like to know" +
-                    "about {2}? (enter of 'hometown' or 'favorite food'",studentNum +1,
-                    names[studentNum+1], names[studentNum+1]);
-                userAnswer = Console.ReadLine().ToLower();
-                while (validdata)
+                orginalNum = UserInput();
+                studentNum = orginalNum - 1;
+                try
                 {
-                    caseTemp = true;
-                    switch(userAnswer)
+                    Console.WriteLine("Student {0} is {1}. What would you like to know" +
+                        "about {2}? (enter of 'hometown' or 'favorite food'", orginalNum,
+                        names[studentNum], names[studentNum]);
+
+                    userAnswer = Console.ReadLine().ToLower();
+
+                    while (validdata)
+                    {
+                        switch (userAnswer)
                         {
-                        case "hometown":
-                            {
-                                Console.WriteLine("{0} hometown is {1}. Would you like to know more?" +
-                                    " (enter 'yes' or 'no')", names[studentNum], hometown[studentNum]);
-                                while(caseTemp == true)
-                                { 
-                                userWantMore = Console.ReadLine().ToLower();
-                                    if (userWantMore == "yes")
-                                    {
-                                        validdata = true;
-                                        caseTemp = false;
-                                    }
-                                    else if (userWantMore == "no")
-                                    {
-                                        validdata = false;
-                                        caseTemp = false;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("You Enter something besides yes or no. " +
-                                            "Please Try Again\nDid you want to know more? 'yes' or 'no'");
-                                        caseTemp = true;
-                                    }
-                                }
-                                break;
-                            }
-                        case "favorite food":
-                            {
-                                Console.WriteLine("{0} is {1}. Would you like to know more?" +
-                                    " (enter 'yes' or 'no')", names[studentNum], food[studentNum]);
-                                while (caseTemp == true)
+                            case "hometown":
                                 {
-                                    userWantMore = Console.ReadLine().ToLower();
-                                    if (userWantMore == "yes")
-                                    {
-                                        validdata = true;
-                                        caseTemp = false;
-                                    }
-                                    else if (userWantMore == "no")
+                                    Console.WriteLine("{0} hometown is {1}. Would you like to know more?" +
+                                        " (enter 'yes' or 'no')", names[studentNum], hometown[studentNum]);
+
+                                    if (!ContinueMethod())
                                     {
                                         validdata = false;
-                                        caseTemp = false;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("You Enter something besides yes or no. " +
-                                            "Please Try Again/n Did you want to know more? 'yes' or 'no'");
-                                        caseTemp = true;
                                     }
                                 }
                                 break;
-                            }
-                    }
-                    if (validdata == true)
-                    {
-                        Console.WriteLine("What do you want to know about {0}? (enter of 'hometown' or " +
-                            "'favorite food'", names[studentNum]);
-                        userAnswer = Console.ReadLine().ToLower();
-                    }
-                    /*if (userAnswer == "hometown")
-                    {
-                        Console.WriteLine("{0} is {1}. Would you like to know more?" +
-                            " (enter 'yes' or 'no')",names[studentNum], hometown[studentNum]);
-                        userAnswer = userAnswer = Console.ReadLine().ToLower();
 
+                            case "favorite food":
+                                {
+                                    Console.WriteLine("{0} favorite food is {1}. Would you like to know more?" +
+                                        " (enter 'yes' or 'no')", names[studentNum], food[studentNum]);
+                                    if (!ContinueMethod())
+                                    {
+                                        validdata = false;
+                                    }
+                                }
+                                break;
+                            default:
+                                {
+                                    Console.WriteLine("That data does not exist. Please Try Again: \n");
+                                    break;
+                                }
 
+                        }
+                        if (validdata == true)
+                        {
+                            Console.WriteLine("What do you want to know about {0}? (enter of 'hometown' or " +
+                                "'favorite food')", names[studentNum]);
+                            userAnswer = Console.ReadLine().ToLower();
+                        }
                     }
-                    else if (userAnswer == "favorite food")
-                    {
-                        Console.WriteLine("{0} is {1}.", names[studentNum], food[studentNum]);
-                        userAnswer = userAnswer = Console.ReadLine().ToLower();
-                    }
-                    else
-                        Console.WriteLine("That data does not exist. Please try again." +
-                            "(enter 'hometown' or 'favorite food'");
-                    userAnswer = userAnswer = Console.ReadLine().ToLower();*/
                 }
+                catch(IndexOutOfRangeException)
+                {
+                    Console.WriteLine("Error: please a number between 1 and 20." +
+                        " Try Again\n");
+                    orginalNum = UserInput();
+                    studentNum = orginalNum - 1;
+                }
+
             }
         }
+
         static int UserInput()
         {
-            int userInput;
-            Console.WriteLine("Which student would you" +
-            " like to learn more about? (enter a number 1-20)");
-            try
-            {
-                userInput = int.Parse(Console.ReadLine());
-                return userInput;
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("ERROR: Please check your input");
-                return UserInput();
-            }
-
+                int userInput;
+                Console.WriteLine("Which student would you" +
+                " like to learn more about? (enter a number 1-20)");
+                try
+                {
+                    userInput = int.Parse(Console.ReadLine());
+                    return userInput;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("ERROR: Please check your input");
+                    return UserInput();
+                } 
         }
 
-        static string CheckUserAnswer(string temp)
+        static bool ContinueMethod()
         {
-            switch(temp)
+            strCheck = Console.ReadLine().ToLower();
+            if (strCheck == "yes")
             {
-                case "hometown":
-                    return "hometown";
-                case "favorite food":
-                    return "favorite food";
-                default: return null;
+                return true;
             }
+            else if (strCheck == "no")
+            {
+                return false;
+            }
+            else
+            {
+                Console.WriteLine("You entered something besides yes or no.\n " +
+                    "Please Try Again. 'yes' or 'no'");
+               return ContinueMethod();
+            }
+        }
+        static string CheckUserAnswe(string temp)
+        {
+         
         }
 
     }
